@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Pikachu</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="main-game">
+    <h1 class="game-name">PIKACHU</h1>
+    <div class="menu-btn">
+        <button class="btn-menu" onclick="openLevelTable()">Chơi game</button>
+        <button class="btn-menu" onclick="alert('Nhiệm vụ của bạn là tìm và nối các cặp hình Pokémon giống nhau sao cho đường nối giữa chúng gấp khúc tối đa 3 đoạn thẳng (không quá 2 lần rẽ) và không bị các ô khác cản đường')">Hướng dẫn</button>
+    </div>
+</div>
+<div id="table-level">
+    <div class="bg-black" onclick="closeLevelTable()"></div>
+    <div class="table-popup">
+        <h2>Chọn level</h2>
+        <button class="btn-level" onclick="playgame(1)">Level 1</button>
+        <button class="btn-level" onclick="playgame(2)">Level 2</button>
+        <button class="btn-level" onclick="playgame(3)">Level 3</button>
+        <button class="btn-level" onclick="playgame(4)">Level 4</button>
+        <button class="btn-level" onclick="playgame(5)">Level 5</button>
+
+        <button class="btn-close" onclick="closeLevelTable()">Quay lại menu</button>
+    </div>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
