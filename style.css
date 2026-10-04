@@ -2,7 +2,9 @@ body{
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: midnightblue;
+    background-image: url("./pikachu.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
     text-align: center;
 }
 
@@ -11,8 +13,8 @@ body{
 }
 
 .game-name{
-    font-size: 50px;
-    color: gold;
+    font-size: 80px;
+    color: yellow;
     margin-bottom: 50px;
 }
 
@@ -103,4 +105,60 @@ body{
 
 .btn-close:hover{
     background-color: dimgray;
+}
+
+#game-screen{
+    display: none;
+}
+
+#level-title{
+    color: gold;
+}
+
+#btn-exit{
+    width: 200px;
+    margin: 20px auto;
+}
+
+#board{
+    display: grid;
+    grid-template-columns: repeat(16, 50px);
+    gap: 2px;
+    margin: 20px auto;
+    width: max-content;
+    background-color: transparent;
+    padding: 5px;
+}
+
+/*Tao o vuong cho bang game (tile)*/
+.tile{
+    width: 50px;
+    height: 50px;
+    background-color: white;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.tile:hover{
+    background-color: darkkhaki;
+}
+
+/*Tao class khi nhan vao o*/
+.tile-active{
+    border: 3px solid red;
+    background-color: white;
+    z-index: 10;
+}
+
+/*Tao class khi mat o*/
+.tile-empty{
+    background-color: transparent;
+    border: none;
+    cursor: default;
+    pointer-events: none;
 }
