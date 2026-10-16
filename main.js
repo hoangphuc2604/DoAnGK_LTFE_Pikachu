@@ -28,11 +28,25 @@ var oChonLan1 = null;
 
 function createArr() {
     arrGame = [];
+    var tongSoLuongO = rowTable * colTable;
+    var cardArray = [];
+    for (var i = 0; i < tongSoLuongO / 2; i++) {
+        var imgPikachu = Math.floor(Math.random() * 16) + 1;
+        cardArray.push(imgPikachu);
+        cardArray.push(imgPikachu);
+    }
+    for (var i = 0; i < cardArray.length; i++) {
+        var j = Math.floor(Math.random() * cardArray.length);
+        var temp = cardArray[i];
+        cardArray[i] = cardArray[j];
+        cardArray[j] = temp;
+    }
+    var count = 0;
     for (var i = 0; i < rowTable; i++) {
         var row = [];
         for (var j = 0; j < colTable; j++) {
-            var imgPikachu = Math.floor(Math.random() * 16) + 1;
-            row.push(imgPikachu);
+            row.push(cardArray[count]);
+            count++;
         }
         arrGame.push(row);
     }
@@ -51,7 +65,7 @@ function createTableGame() {
                 o.className = "tile tile-empty";
             } else {
                 o.className = "tile";
-                o.innerHTML = value;
+                o.innerHTML = '<img src="./image/' + value + '.png" style="width: 100%; height: 100%; object-fit: cover;" draggable="false"/>';
                 o.onclick = function() {
                     xuLyChonO(this)
                 };
