@@ -12,11 +12,15 @@ function playgame(level){
     mainGame.style.display = "none";
     gameScreen.style.display = "block";
     document.getElementById("num-level").innerHTML = level;
+    currentLevel = level;
     createArr();
     createTableGame();
+    startTimer();
 }
 
 function backMenu(){
+    clearInterval(timeInterval);
+    document.getElementById("result-popup").style.display = 'none';
     gameScreen.style.display = "none";
     mainGame.style.display = "block";
 }
@@ -177,6 +181,7 @@ function xuLyChonO(oDuocChon) {
                 arrGame[x][y] = 0;
                 arrGame[x1][y1] = 0;
                 veDuongAn(path);//ve duong noi cac toa do lai
+                checkWin();
                 oChonLan1 = null;//reset luot chon de chon cap tiep theo
                 document.getElementById('board').style.pointerEvents = 'none';
                 setTimeout(function () {
@@ -225,4 +230,78 @@ function veDuongAn(path) {
     polyline.setAttribute("points", point.trim());
     svg.appendChild(polyline);
     board.appendChild(svg);
+}
+
+var currentLevel = 1;
+var timeLeft = 0;
+var timeInterval;
+
+function startTimer() {
+    clearInterval(timeInterval);
+    timeLeft = 480;
+    document.getElementById('time-left').innerHTML = timeLeft;
+    timeInterval = setInterval(function () {
+        timeLeft--;
+        document.getElementById('time-left').innerHTML = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(timeInterval);
+            showResult(false);
+        }
+    }, 1000)
+}
+
+function checkWin() {
+    var isWin = true;
+    for (var i = 0; i < rowTable; i++) {
+        for (var j = 0; j < colTable; j++) {
+            if (arrGame[i][j] !== 0) {
+                isWin = false;
+                break;
+            }
+        }
+        if (!isWin) {
+            break;
+        }
+    }
+    if (isWin) {
+        clearInterval(timeInterval);
+        setTimeout(function () {
+            showResult(true);
+        }, 500);
+    }
+}
+
+function showResult(isWin) {
+    var popup = document.getElementById("result-popup");
+    var title = document.getElementById("result-title");
+    var message = document.getElementById("result-message");
+    var btnNext = document.getElementById("btn-next-level");
+    popup.style.display = 'flex';
+    if (isWin) {
+        title.innerHTML = 'Chúc mừng!';
+        title.style.color = 'gold';
+        message.innerHTML = 'Bạn đã hoàn thành Level ' + currentLevel + '! Hãy sang Level kế tiếp nào!';
+        if (currentLevel >= 6) {
+            message.innerHTML = 'Xin chúc mừng bạn đã hoàn thành tất cả Level của game!';
+        } else {
+            btnNext.style.display = 'block';
+        }
+    } else {
+        title.innerHTML = 'Hết giờ!';
+        title.style.color = 'red';
+        message.innerHTML = 'Rất tiếc bạn đã không hoàn thành Level!';
+        btnNext.style.display = 'none';
+    }
+}
+
+function quaMan() {
+    document.getElementById("result-popup").style.display = 'none';
+    if (currentLevel < 6) {
+        playgame(currentLevel + 1);
+    }
+}
+
+function choiLai() {
+    document.getElementById("result-popup").style.display = 'none';
+    playgame(currentLevel);
 }
