@@ -29,9 +29,26 @@
 </div>
 
 <div id="game-screen">
-    <h2 id="level-title">Level: <span id="num-level">1</span></h2>
+    <div class="game-header">
+        <h2 id="level-title">Level: <span id="num-level">1</span></h2>
+        <h2 class="time-text">Thời gian: <span id="time-left">0</span> giây</h2>
+    </div>
     <div id="board"></div>
-    <button id="btn-exit" class="btn-close" onclick="backMenu()">Thoát màn chơi</button>
+    <div class="btn-action">
+        <button class="btn-menu btn-select-level" onclick="openLevelTable()">Chọn level khác</button>
+        <button id="btn-exit" class="btn-close" onclick="backMenu()">Thoát màn chơi</button>
+    </div>
+</div>
+
+<div id="result-popup">
+    <div class="bg-black"></div>
+    <div class="table-popup popup-content">
+        <h2 id="result-title">Chúc mừng!</h2>
+        <p id="result-message">Bạn đã hoàn thành level!</p>
+        <button id="btn-next-level" class="btn-level btn-next" onclick="quaMan()">Qua màn</button>
+        <button class="btn-level btn-replay" onclick="choiLai()">Chơi lại</button>
+        <button class="btn-level btn-home" onclick="backMenu()">Về màn hình chính</button>
+    </div>
 </div>
 <script src="main.js"></script>
 </body>

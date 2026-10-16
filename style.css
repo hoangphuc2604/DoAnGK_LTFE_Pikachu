@@ -2,7 +2,7 @@ body{
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-image: url("./pikachu.jpg");
+    background-image: url("./image/pikachu.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     text-align: center;
@@ -115,11 +115,6 @@ body{
     color: gold;
 }
 
-#btn-exit{
-    width: 200px;
-    margin: 70px auto;
-}
-
 #board{
     display: grid;
     grid-template-columns: repeat(16, 50px);
@@ -161,4 +156,81 @@ body{
     border: none;
     cursor: default;
     pointer-events: none;
+}
+
+.game-header{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.time-text{
+    color: red;
+}
+
+.btn-action{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+    margin-bottom: 50px;
+}
+
+.btn-select-level #btn-exit{
+    width: auto;
+    padding: 10px 15px;
+    margin: 0;
+}
+
+#result-popup{
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.popup-content{
+    z-index: 1000;
+    text-align: center;
+}
+
+#result-title{
+    color: gold;
+    font-size: 40px;
+}
+
+#result-message{
+    color: white;
+    font-size: 20px;
+    margin-bottom: 20px;
+}
+
+.btn-next{
+    background-color: lawngreen;
+    color: white;
+    border-color: black;
+}
+
+.btn-next:hover{
+    background-color: darkgreen;
+}
+
+.btn-replay{
+    background-color: orange;
+    color: white;
+    border-color: black;
+}
+
+.btn-replay:hover{
+    background-color: chocolate;
+}
+
+.btn-home{
+    margin-top: 10px;
 }
