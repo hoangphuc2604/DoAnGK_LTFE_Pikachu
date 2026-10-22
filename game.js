@@ -34,7 +34,16 @@ function createArr() {
     arrGame = [];
     var tongSoLuongO = rowTable * colTable;
     var cardArray = [];
-    for (var i = 0; i < tongSoLuongO / 2; i++) {
+
+    var soLuongDa = 0;
+    if (currentLevel === 2){
+        soLuongDa = 20;
+        for (var d = 0; d < soLuongDa; d++) {
+            cardArray.push(-1);
+        }
+    }
+    var soOConLai = tongSoLuongO - soLuongDa;
+    for (var i = 0; i < soOConLai / 2; i++) {
         var imgPikachu = Math.floor(Math.random() * 16) + 1;
         cardArray.push(imgPikachu);
         cardArray.push(imgPikachu);
@@ -67,7 +76,10 @@ function createTableGame() {
             o.dataset.y = j;
             if (value === 0){
                 o.className = "tile tile-empty";
-            } else {
+            } else if (value === -1){
+                o.className = "tile tile-rock";
+            }
+            else {
                 o.className = "tile";
                 o.innerHTML = '<img src="./image/' + value + '.png" style="width: 100%; height: 100%; object-fit: cover;" draggable="false"/>';
                 o.onclick = function() {
@@ -181,11 +193,20 @@ function xuLyChonO(oDuocChon) {
                 arrGame[x][y] = 0;
                 arrGame[x1][y1] = 0;
                 veDuongAn(path);//ve duong noi cac toa do lai
-                checkWin();
+                //lv3
+                if (currentLevel === 3) {
+                    donHinhXuong();
+                }
+                var isWin = checkWin();
                 oChonLan1 = null;//reset luot chon de chon cap tiep theo
                 document.getElementById('board').style.pointerEvents = 'none';
                 setTimeout(function () {
                     createTableGame();//ve lai bang
+                    if (isWin === false){
+                        if (checkConDuongAnKhong() === false) {
+                            randomLaiBangGame();
+                        }
+                    }
                     document.getElementById('board').style.pointerEvents = 'auto';
                 }, 400);
                 return;
@@ -254,7 +275,7 @@ function checkWin() {
     var isWin = true;
     for (var i = 0; i < rowTable; i++) {
         for (var j = 0; j < colTable; j++) {
-            if (arrGame[i][j] !== 0) {
+            if (arrGame[i][j] > 0) {
                 isWin = false;
                 break;
             }
@@ -269,6 +290,7 @@ function checkWin() {
             showResult(true);
         }, 500);
     }
+    return isWin;
 }
 
 function showResult(isWin) {
@@ -304,4 +326,71 @@ function quaMan() {
 function choiLai() {
     document.getElementById("result-popup").style.display = 'none';
     playgame(currentLevel);
+}
+
+//lv3
+function donHinhXuong() {
+    for (var j = 0; j < colTable; j++) {
+        var tempCol = [];
+        for (var i = 0; i < rowTable; i++) {
+            if (arrGame[i][j] > 0) {
+                tempCol.push(arrGame[i][j]);
+            }
+        }
+        var soOTrong = rowTable - tempCol.length;
+        for (var i = 0; i < rowTable; i++) {
+            if (i < soOTrong) {
+                arrGame[i][j] = 0;
+            } else {
+                arrGame[i][j] = tempCol[i - soOTrong];
+            }
+        }
+    }
+}
+
+function checkConDuongAnKhong() {
+    for (var i1 = 0; i1 < rowTable; i1++) {
+        for (var j1 = 0; j1 < colTable; j1++) {
+            if (arrGame[i1][j1] > 0) {
+                for (var i2 = 0; i2 < rowTable; i2++) {
+                    for (var j2 = 0; j2 < colTable; j2++) {
+                        if ((i1 !== i2 || j1 !== j2) && arrGame[i1][j1] === arrGame[i2][j2] && arrGame[i2][j2] > 0) {
+                            if (checkDuongDi(i1, j1, i2, j2) != null){
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
+}
+
+function randomLaiBangGame() {
+    var arrTemp = [];
+    for (var i = 0; i < rowTable; i++) {
+        for (var j = 0; j < colTable; j++) {
+            if (arrGame[i][j] !== 0) {
+                arrTemp.push(arrGame[i][j]);
+            }
+        }
+    }
+    for (var i = 0; i < arrTemp.length; i++) {
+        var random = Math.floor(Math.random() * arrTemp.length);
+        var temp = arrTemp[i];
+        arrTemp[i] = arrTemp[random];
+        arrTemp[random] = temp;
+    }
+    var count = 0;
+    for (var i = 0; i < rowTable; i++) {
+        for (var j = 0; j < colTable; j++) {
+            if (arrGame[i][j] !== 0) {
+                arrGame[i][j] = arrTemp[count];
+                count++;
+            }
+        }
+    }
+    createTableGame();
+    alert("Vì đã hết đường đi nên game sẽ trộn lại bàn cờ. Mời bạn tiếp tục chơi!");
 }
