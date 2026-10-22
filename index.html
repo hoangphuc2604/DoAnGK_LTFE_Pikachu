@@ -3,7 +3,267 @@
 <head>
     <meta charset="UTF-8">
     <title>Game Pikachu</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url("./image/pikachu.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            text-align: center;
+        }
+
+        #main-game{
+            margin-top: 150px;
+        }
+
+        .game-name{
+            font-size: 80px;
+            color: yellow;
+            margin-bottom: 50px;
+        }
+
+        .menu-btn{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-menu{
+            width: 220px;
+            height: 50px;
+            padding: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            border: 3px solid #000000;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .btn-menu:hover{
+            background-color: darkkhaki;
+        }
+
+        #table-level{
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .bg-black{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 9998;
+        }
+
+        .table-popup{
+            position: relative;
+            background-color: cornflowerblue;
+            width: 350px;
+            padding: 30px;
+            border: 3px solid #000000;
+            border-radius: 10px;
+            z-index: 9999;
+        }
+
+        .table-popup h2{
+            margin-top: 0;
+            color: white;
+        }
+
+        .btn-level{
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            border: 3px solid #000000;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .btn-level:hover{
+            background-color: darkkhaki;
+        }
+
+        .btn-close{
+            display: block;
+            width: 100%;
+            padding: 10px;
+            margin-top: 25px;
+            font-size: 20px;
+            background-color: darkgray;
+            color: white;
+            border: 3px solid #000000;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .btn-close:hover{
+            background-color: dimgray;
+        }
+
+        #game-screen{
+            display: none;
+        }
+
+        #level-title{
+            color: gold;
+        }
+
+        #board{
+            display: grid;
+            grid-template-columns: repeat(16, 50px);
+            gap: 2px;
+            margin: 20px auto;
+            width: max-content;
+            background-color: transparent;
+            padding: 5px;
+        }
+
+        /*Tao o vuong cho bang game (tile)*/
+        .tile{
+            width: 50px;
+            height: 50px;
+            background-color: white;
+            font-size: 20px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+
+        .tile:hover{
+            background-color: darkkhaki;
+        }
+
+        /*Tao class khi nhan vao o*/
+        .tile-active{
+            border: 3px solid red;
+            background-color: white;
+            z-index: 10;
+        }
+
+        /*Tao class khi mat o*/
+        .tile-empty{
+            background-color: transparent;
+            border: none;
+            cursor: default;
+            pointer-events: none;
+        }
+
+        .tile-rock{
+            background-image: url("./image/rock.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-color: transparent;
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        .game-header{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .time-text{
+            color: red;
+        }
+
+        .btn-action{
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        .btn-bottom{
+            width: 220px;
+            padding: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            background-color: lightgray;
+            color: black;
+            border: 3px solid #000000;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .btn-bottom:hover{
+            background-color: dimgray;
+        }
+
+        #result-popup{
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+        }
+
+        .popup-content{
+            z-index: 10000;
+            text-align: center;
+        }
+
+        #result-title{
+            color: gold;
+            font-size: 40px;
+        }
+
+        #result-message{
+            color: white;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .btn-next{
+            background-color: lawngreen;
+            color: white;
+            border-color: black;
+        }
+
+        .btn-next:hover{
+            background-color: darkgreen;
+        }
+
+        .btn-replay{
+            background-color: orange;
+            color: white;
+            border-color: black;
+        }
+
+        .btn-replay:hover{
+            background-color: chocolate;
+        }
+
+        .btn-home{
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
 <div id="main-game">
@@ -50,6 +310,6 @@
         <button class="btn-level btn-home" onclick="backMenu()">Về màn hình chính</button>
     </div>
 </div>
-<script src="main.js"></script>
+<script src="game.js"></script>
 </body>
 </html>
