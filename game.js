@@ -13,6 +13,18 @@ function playgame(level){
     gameScreen.style.display = "block";
     document.getElementById("num-level").innerHTML = level;
     currentLevel = level;
+    if (currentLevel === 5){
+        heart = 10;
+        document.getElementById("live-container").style.display = "block";
+        document.getElementById("num-live").innerHTML = heart;
+    } else {
+        document.getElementById("live-container").style.display = "none";
+    }
+    if (currentLevel === 6){
+        document.getElementById("darkness").style.display = "block";
+    } else {
+        document.getElementById("darkness").style.display = "none";
+    }
     createArr();
     createTableGame();
     startTimer();
@@ -21,6 +33,8 @@ function playgame(level){
 function backMenu(){
     clearInterval(timeInterval);
     document.getElementById("result-popup").style.display = 'none';
+    document.getElementById("pause-popup").style.display = 'none';
+    document.getElementById("darkness").style.display = 'none';
     gameScreen.style.display = "none";
     mainGame.style.display = "block";
 }
@@ -28,6 +42,7 @@ function backMenu(){
 var rowTable = 9;
 var colTable = 16;
 var arrGame = [];
+var heart = 10;
 var oChonLan1 = null;
 
 function createArr() {
@@ -63,6 +78,17 @@ function createArr() {
         }
         arrGame.push(row);
     }
+    if (currentLevel === 4){
+        var soLuongBang = 0;
+        while (soLuongBang < 30){
+            var X = Math.floor(Math.random() * rowTable);
+            var Y = Math.floor(Math.random() * colTable);
+            if (arrGame[X][Y] > 0 && arrGame[X][Y] <= 16){
+                arrGame[X][Y] += 100;
+                soLuongBang++;
+            }
+        }
+    }
 }
 
 function createTableGame() {
@@ -78,6 +104,9 @@ function createTableGame() {
                 o.className = "tile tile-empty";
             } else if (value === -1){
                 o.className = "tile tile-rock";
+            } else if (value > 100){
+                o.className = "tile tile-ice";
+                o.innerText = ' ';
             }
             else {
                 o.className = "tile";
@@ -197,6 +226,11 @@ function xuLyChonO(oDuocChon) {
                 if (currentLevel === 3) {
                     donHinhXuong();
                 }
+                //lv4
+                if (currentLevel === 4) {
+                    phaBangQuanhO(x, y);
+                    phaBangQuanhO(x1, y1);
+                }
                 var isWin = checkWin();
                 oChonLan1 = null;//reset luot chon de chon cap tiep theo
                 document.getElementById('board').style.pointerEvents = 'none';
@@ -215,6 +249,16 @@ function xuLyChonO(oDuocChon) {
         //chon sai
         oChonLan1 = null;//reset luot chon
         createTableGame();//tao lai bang de bo hieu ung vien sang
+        if (currentLevel === 5) {
+            heart--;
+            document.getElementById('num-live').innerHTML = heart;
+            if (heart <= 0) {
+                clearInterval(timeInterval);
+                setTimeout(function () {
+                    showResult(false);
+                }, 200);
+            }
+        }
     }
 }
 
@@ -305,11 +349,12 @@ function showResult(isWin) {
         message.innerHTML = 'Bạn đã hoàn thành Level ' + currentLevel + '! Hãy sang Level kế tiếp nào!';
         if (currentLevel >= 6) {
             message.innerHTML = 'Xin chúc mừng bạn đã hoàn thành tất cả Level của game!';
+            btnNext.style.display = 'none';
         } else {
             btnNext.style.display = 'block';
         }
     } else {
-        title.innerHTML = 'Hết giờ!';
+        title.innerHTML = 'Bạn đã thua!';
         title.style.color = 'red';
         message.innerHTML = 'Rất tiếc bạn đã không hoàn thành Level!';
         btnNext.style.display = 'none';
@@ -325,6 +370,7 @@ function quaMan() {
 
 function choiLai() {
     document.getElementById("result-popup").style.display = 'none';
+    document.getElementById("pause-popup").style.display = 'none';
     playgame(currentLevel);
 }
 
@@ -394,3 +440,42 @@ function randomLaiBangGame() {
     createTableGame();
     alert("Vì đã hết đường đi nên game sẽ trộn lại bàn cờ. Mời bạn tiếp tục chơi!");
 }
+
+//lv4
+function phaBangQuanhO(x, y) {
+    var huongDi = [{dx: -1, dy: 0}, {dx: 1, dy: 0}, {dx: 0, dy: -1}, {dx: 0, dy: 1}];
+    for (var i = 0; i < huongDi.length; i++) {
+        var X = x + huongDi[i].dx;
+        var Y = y + huongDi[i].dy;
+        if (X >= 0 && X < rowTable && Y >= 0 && Y < colTable) {
+            if (arrGame[X][Y] > 100){
+                arrGame[X][Y] -= 100;
+            }
+        }
+    }
+}
+
+function pauseGame() {
+    clearInterval(timeInterval);
+    document.getElementById("pause-popup").style.display = 'flex';
+}
+
+function resumeGame() {
+    document.getElementById("pause-popup").style.display = 'none';
+    timeInterval = setInterval(function () {
+        timeLeft--;
+        document.getElementById("time-left").innerHTML = timeLeft;
+        if (timeLeft <= 0) {
+            clearInterval(timeInterval);
+            showResult(false);
+        }
+    }, 1000);
+}
+
+document.addEventListener('mousemove', function (event) {
+   if (currentLevel === 6){
+       var x = event.clientX;
+       var y = event.clientY;
+       document.getElementById("darkness").style.background = 'radial-gradient(circle at ' + x + 'px ' + y + 'px, transparent 60px, rgba(0,0,0,0.98) 150px)';
+   }
+});
